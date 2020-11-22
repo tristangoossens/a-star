@@ -2,6 +2,8 @@ import pygame
 import block as b
 import grid as g
 import pathfinder as p
+from tkinter import *
+from tkinter import messagebox
 
 # INIT PYGAME
 pygame.init()
@@ -72,9 +74,13 @@ def main():
                     if event.key == pygame.K_F3:
                         pencil = b.BlockType.WALL
                     if event.key == pygame.K_SPACE:
-                        started = True
-                        a_star = p.Pathfinder(grid_)
-                        a_star.find_path(lambda: grid_.draw_grid(win, b.type_color), grid_.find_start(), grid_.find_end())
+                        if not grid_.find_start() is None and not grid_.find_end() is None:
+                            started = True
+                            a_star = p.Pathfinder(grid_)
+                            a_star.find_path(lambda: grid_.draw_grid(win, b.type_color), grid_.find_start(), grid_.find_end())
+                        else:
+                            Tk().wm_withdraw()  # to hide the main window
+                            messagebox.showinfo('ERROR', 'Please select a starting and end point')
 
         win.fill((87, 89, 93))
         grid_.draw_grid(win, b.type_color)
